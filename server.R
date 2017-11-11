@@ -21,7 +21,19 @@ runQuery <- function(query) {
 
 shinyServer(function(input, output, session) {
   tags <- runQuery("SELECT * FROM TAG")
-  updateSelectizeInput(session, 'search', choices = tags$TagName, server = TRUE)
+  updateSelectizeInput(session, 'search', choices = c('All', tags$TagName), selected = 'All')
   
-  #output$major.table <- renderTable(data.frame(majors))
+  output$major.table <- renderTable({
+    selected.tag <- input$search
+    majors <- runQuery("SELECT MajorName, TagName
+                        FROM MAJOR M
+                          JOIN MAJOR_TAG MT ON MT.MajorID = M.MajorID
+                          JOIN TAG T ON T.TagID = MT.TagID")
+    
+    if(selected.tag != 'All') {
+      majors <- majors %>% filter(TagName == selected.tag)
+    }
+    
+    majors
+  })
 })
