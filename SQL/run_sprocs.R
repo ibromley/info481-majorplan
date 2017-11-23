@@ -45,15 +45,17 @@ for(major in names(tags)) {
   numTags <- length(tags.of.major) + 1
   for(i in 1:numTags) { 
     print(tags.of.major[i,])
-    print("
-      BEGIN TRAN
-      INSERT INTO TAG(TagName)
-      VALUES()
-      
-      IF @@ERROR <> 0
-        ROLLBACK TRAN
-      ELSE
-        COMMIT TRAN"
+    paste0("
+    BEGIN TRAN
+    INSERT INTO TAG(TagName)
+    VALUES(", tags.of.major[i,], ")
+
+    INSERT INTO MAJOR_TAG()
+    
+    IF @@ERROR <> 0
+      ROLLBACK TRAN
+    ELSE
+      COMMIT TRAN"
     )  
   }
 }
