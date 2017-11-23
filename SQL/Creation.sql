@@ -42,6 +42,7 @@ CREATE TABLE COURSE (
     PRIMARY KEY (CourseID),
     CourseName varchar(100),
     CourseDesc varchar(100),
+    MinGrade FLOAT,
     PrereqID INT,
     FOREIGN KEY (PrereqID) REFERENCES COURSE(CourseID)
 );
