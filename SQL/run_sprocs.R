@@ -32,30 +32,17 @@ runQuery <- function(query) {
   return(result)
 }
 
-# SPROC: add major course dependencies
+# add major course dependencies
 
-# SPROC: add major requirements
+# add major requirements
 
-# SPROC: add major tags
+# add major tags
 for(major in names(tags)) {
   tags.of.major <- tags %>%
     select(major) %>%
     na.omit()
   
-  numTags <- length(tags.of.major) + 1
-  for(i in 1:numTags) { 
-    print(tags.of.major[i,])
-    paste0("
-    BEGIN TRAN
-    INSERT INTO TAG(TagName)
-    VALUES(", tags.of.major[i,], ")
-
-    INSERT INTO MAJOR_TAG()
-    
-    IF @@ERROR <> 0
-      ROLLBACK TRAN
-    ELSE
-      COMMIT TRAN"
-    )  
+  for(i in 1:nrow(tags.of.major)) { 
+    runQuery(paste0("CALL uspAddTags('", tags.of.major[i,], "', '", major, "')"))
   }
 }
