@@ -35,6 +35,17 @@ runQuery <- function(query) {
 # add major course dependencies
 
 # add major requirements
+for(major in names(reqs)) {
+  reqs.of.major <- reqs %>%
+    select(major) %>%
+    na.omit()
+  
+  if(nrow(reqs.of.major) != 0) {
+    for(i in 1:nrow(reqs.of.major)) {
+      runQuery(paste0("CALL uspAddReqs('", reqs.of.major[i,], "', '", major, "')"))
+    }
+  }
+}
 
 # add major tags
 for(major in names(tags)) {
@@ -42,7 +53,9 @@ for(major in names(tags)) {
     select(major) %>%
     na.omit()
   
-  for(i in 1:nrow(tags.of.major)) { 
-    runQuery(paste0("CALL uspAddTags('", tags.of.major[i,], "', '", major, "')"))
+  if(nrow(tags.of.major) != 0) {
+    for(i in 1:nrow(tags.of.major)) { 
+      runQuery(paste0("CALL uspAddTags('", tags.of.major[i,], "', '", major, "')"))
+    }
   }
 }
