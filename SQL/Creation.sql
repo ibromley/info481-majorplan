@@ -24,8 +24,7 @@ CREATE TABLE MAJOR_TAG (
 CREATE TABLE REQ (
 	ReqID INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (ReqID),
-    ReqName varchar(100),
-    ReqDesc varchar(100)
+    ReqName varchar(100)
 );
 
 CREATE TABLE MAJOR_REQ (
@@ -41,7 +40,6 @@ CREATE TABLE COURSE (
 	CourseID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (CourseID),
     CourseName varchar(100),
-    CourseDesc varchar(100),
     MinGrade FLOAT,
     PrereqID INT,
     FOREIGN KEY (PrereqID) REFERENCES COURSE(CourseID)

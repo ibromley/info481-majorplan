@@ -1,6 +1,9 @@
-DELIMITER $$
+USE `majorplan`;
+DROP procedure IF EXISTS `uspAddTags`;
 
-CREATE PROCEDURE uspAddTags(IN TagName varchar(100), IN MajorName varchar(100))
+DELIMITER $$
+USE `majorplan`$$
+CREATE PROCEDURE `uspAddTags` ()
 BEGIN
 	DECLARE MajorId INT;
     DECLARE TagId INT;
@@ -15,5 +18,6 @@ BEGIN
 		INSERT INTO MAJOR_TAG(TagID, MajorID)
 		VALUES(TagId, MajorId);
 	COMMIT;
-END;
-$$
+END$$
+
+DELIMITER ;
