@@ -1,22 +1,16 @@
-USE `majorplan`;
-DROP procedure IF EXISTS `uspAddReqs`;
-
-DELIMITER $$
-USE `majorplan` $$
-CREATE PROCEDURE `uspAddReqs`(IN ReqName varchar(100), IN MajorName varchar(100))
+CREATE DEFINER=`ezhai24`@`%` PROCEDURE `uspAddReqs`(IN RqName varchar(100), IN MjrName varchar(100))
 BEGIN
-	DECLARE MajorId INT;
-    DECLARE ReqId INT;
-    SET MajorID = (SELECT MajorID FROM MAJOR WHERE MajorName = @MajorName);
+	DECLARE MjrId INT;
+    DECLARE RqId INT;
+    SET MjrId = (SELECT MajorID FROM MAJOR WHERE MajorName = MjrName);
 
 	START TRANSACTION;
 		INSERT INTO REQ(ReqName)
-		VALUES(@ReqName);
+		VALUES(RqName);
 		
-		SET ReqId = SCOPE_IDENTITY();
+		SET RqId = LAST_INSERT_ID();
 		
 		INSERT INTO MAJOR_REQ(ReqID, MajorID)
-		VALUES(ReqId, MajorId);
+		VALUES(RqId, MjrId);
 	COMMIT;
 END
-$$

@@ -1,23 +1,12 @@
-USE `majorplan`;
-DROP procedure IF EXISTS `uspAddTags`;
-
-DELIMITER $$
-USE `majorplan`$$
-CREATE PROCEDURE `uspAddTags` ()
+CREATE DEFINER=`ezhai24`@`%` PROCEDURE `uspAddTags`(IN TgName varchar(100), IN MjrName varchar(100))
 BEGIN
-	DECLARE MajorId INT;
-    DECLARE TagId INT;
-    SET MajorID = (SELECT MajorID FROM MAJOR WHERE MajorName = @MajorName);
+	DECLARE MjrId INT;
+    DECLARE TgId INT;
+    SET MjrId = (SELECT MajorID FROM MAJOR WHERE MajorName = MjrName);
+    SET TgId = (SELECT TagID FROM TAG WHERE TagName = TgName);
 
-	START TRANSACTION;
-		INSERT INTO TAG(TagName)
-		VALUES(@TagName);
-		
-		SET TagId = SCOPE_IDENTITY();
-		
+	START TRANSACTION;		
 		INSERT INTO MAJOR_TAG(TagID, MajorID)
-		VALUES(TagId, MajorId);
+		VALUES(TgId, MjrId);
 	COMMIT;
-END$$
-
-DELIMITER ;
+END

@@ -33,6 +33,22 @@ runQuery <- function(query) {
 }
 
 # add major course dependencies
+for(major in names(courses)) {
+  courses.of.major <- courses %>%
+    select(major) %>%
+    na.omit()
+  
+  if(nrow(courses.of.major) != 0) {
+    for(i in 1:nrow(courses.of.major)) {
+      if(grepl(";", courses.of.major[i,])){
+        split <- strsplit(toString(courses.of.major[i,]), ";")
+        print(paste0("CALL uspAddCourses('", split[[1]][1], "', '", split[[1]][2] , "', '", major, "')"))
+      } else {
+        print(paste0("CALL uspAddCourses('", split[[1]][1], "', NULL, '", major, "')"))
+      }
+    }
+  }
+}
 
 # add major requirements
 for(major in names(reqs)) {

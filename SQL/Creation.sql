@@ -40,9 +40,7 @@ CREATE TABLE COURSE (
 	CourseID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (CourseID),
     CourseName varchar(100),
-    MinGrade FLOAT,
-    PrereqID INT,
-    FOREIGN KEY (PrereqID) REFERENCES COURSE(CourseID)
+    MinGrade FLOAT
 );
 
 CREATE TABLE MAJOR_COURSE (
