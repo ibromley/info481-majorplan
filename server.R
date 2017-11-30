@@ -1,3 +1,4 @@
+library(shinydashboard)
 library(DBI)
 library(dplyr)
 
@@ -33,7 +34,21 @@ shinyServer(function(input, output, session) {
     if(selected.tag != 'All') {
       majors <- majors %>% filter(TagName == selected.tag)
     }
-    
     majors
   })
+  
+  output$progressBox <- renderValueBox({
+    valueBox(
+      paste0(25 + input$count, "%"), "Prerequisite Progress", icon = icon("list"),
+      color = "green"
+    )
+  })
+  
+  output$approvalBox <- renderValueBox({
+    valueBox(
+      "20%", "Degree Completion", icon = icon("university"),
+      color = "yellow"
+    )
+  })
+  
 })
