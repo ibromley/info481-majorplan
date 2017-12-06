@@ -4,6 +4,7 @@ library(dplyr)
 
 # read data files
 setwd("~/University of Washington/Senior/Fall/Info 481/Final Project/info481-majorplan/SQL")
+majors <- read.csv("../data/majors.csv", na.strings=c("","NA"))
 courses <- read.csv("../data/major_courses.csv", na.strings=c("","NA"))
 reqs <- read.csv("../data/major_reqs.csv", na.strings=c("","NA"))
 tags <- read.csv("../data/major_tags.csv", na.strings=c("","NA"))
@@ -30,6 +31,11 @@ runQuery <- function(query) {
   # run query and return result
   result <- dbGetQuery(conn, query)
   return(result)
+}
+
+# add majors
+for(i in 1:nrow(majors)) {
+  print(paste0("CALL uspAddMajors('", majors[i,], "')"))
 }
 
 # add major course dependencies
