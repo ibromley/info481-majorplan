@@ -3,9 +3,13 @@ BEGIN
 	DECLARE MjrId INT;
     DECLARE TgId INT;
     SET MjrId = (SELECT MajorID FROM MAJOR WHERE MajorName = MjrName);
-    SET TgId = (SELECT TagID FROM TAG WHERE TagName = TgName);
 
-	START TRANSACTION;		
+	START TRANSACTION;
+		INSERT INTO TAG(TagName)
+        VALUES(TgName);
+        
+		SET TgId = LAST_INSERT_ID();
+	
 		INSERT INTO MAJOR_TAG(TagID, MajorID)
 		VALUES(TgId, MjrId);
 	COMMIT;
