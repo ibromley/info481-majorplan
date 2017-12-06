@@ -35,7 +35,7 @@ runQuery <- function(query) {
 
 # add majors
 for(i in 1:nrow(majors)) {
-  print(paste0("CALL uspAddMajors('", majors[i,], "')"))
+  runQuery(paste0("CALL uspAddMajors('", majors[i,], "')"))
 }
 
 # add major course dependencies
@@ -48,9 +48,9 @@ for(major in names(courses)) {
     for(i in 1:nrow(courses.of.major)) {
       if(grepl(";", courses.of.major[i,])){
         split <- strsplit(toString(courses.of.major[i,]), ";")
-        print(paste0("CALL uspAddCourses('", split[[1]][1], "', '", split[[1]][2] , "', '", major, "')"))
+        runQuery(paste0("CALL uspAddCourses('", split[[1]][1], "', '", split[[1]][2] , "', '", major, "')"))
       } else {
-        print(paste0("CALL uspAddCourses('", split[[1]][1], "', NULL, '", major, "')"))
+        runQuery(paste0("CALL uspAddCourses('", split[[1]][1], "', NULL, '", major, "')"))
       }
     }
   }
@@ -81,3 +81,5 @@ for(major in names(tags)) {
     }
   }
 }
+
+

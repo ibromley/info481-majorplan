@@ -1,4 +1,4 @@
-CREATE DEFINER=`ezhai24`@`%` PROCEDURE `uspAddReqs`(IN RqName varchar(100), IN MjrName varchar(100))
+CREATE DEFINER=`ezhai24`@`%` PROCEDURE `uspAddReqs`(IN RqName varchar(500), IN MjrName varchar(100))
 BEGIN
 	DECLARE MjrId INT;
     DECLARE RqId INT;
