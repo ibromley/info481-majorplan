@@ -21,23 +21,23 @@ runQuery <- function(query) {
 }
 
 shinyServer(function(input, output, session) {
+  # get all tags in a database
   tags <- runQuery("SELECT * FROM TAG")
-  updateSelectizeInput(session, 'search', choices = c('Search an area of interest...', tags$TagName), selected = 'Search an area of interest...')
+  updateSelectizeInput(session, 'search', choices = c('', tags$TagName))
   
   output$major.table <- renderTable({
-    # get all tags in a database
     selected.tag <- input$search
-    majors <- runQuery("SELECT MajorName, TagName
-                       FROM MAJOR M
-                       JOIN MAJOR_TAG MT ON MT.MajorID = M.MajorID
-                       JOIN TAG T ON T.TagID = MT.TagID")
     
-    if(selected.tag != 'Search an area of interest...') {
-      # filter tags on search
-      majors <- majors %>% filter(TagName == selected.tag)
+    if(selected.tag != '') {
+      # get all majors associated with tag
+      majors <- runQuery(paste0("SELECT MajorName, TagName
+                                  FROM MAJOR M
+                                    JOIN MAJOR_TAG MT ON MT.MajorID = M.MajorID
+                                    JOIN TAG T ON T.TagID = MT.TagID
+                                  WHERE TagName = '", selected.tag, "'"))
       
-      # create new dataframe for major plan
-      major.plan <- data.frame(matrix(0, ncol = nrow(majors) + 1, nrow = 0))
+      # create a new matrix for major plan table
+      major.plan <- matrix(0, ncol = nrow(majors) + 1, nrow = 0)
       
       # loop through majors associated to tag
       for(major in majors$MajorName){
@@ -49,23 +49,23 @@ shinyServer(function(input, output, session) {
                                     WHERE M.MajorName = '", major, "'"))
         
         if(nrow(courses) != 0) {
-          for(i in 1:nrow(courses)) {
-            # add course as row if unique
-            course.row <- data.frame(matrix(0, ncol = nrow(majors) + 1, nrow = 0))
-            colnames(course.row) <- c("Courses", majors$MajorName)
-            
+          for(course in courses$CourseName) {
+            print(course)
+            # create course row
+            course.row <- c(course, rep(0, nrow(majors)))
+
             major.plan <- rbind(major.plan, course.row)
             
             
             #major.plan[[major]] = "X"
           }
         }
-        
-        # set column names to names of majors
-        colnames(major.plan) <- c("Courses", majors$MajorName)
       }
       
-      major.plan
+      df <- as.data.frame(major.plan)
+      colnames(df) <- c("Courses", majors$MajorName)
+      
+      df
     }
   })
   
