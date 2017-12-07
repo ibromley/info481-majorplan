@@ -39,7 +39,8 @@ CREATE TABLE MAJOR_REQ (
 CREATE TABLE COURSE (
 	CourseID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (CourseID),
-    CourseName varchar(100)
+    CourseName varchar(100),
+    UNIQUE(CourseName)
 );
 
 CREATE TABLE MAJOR_COURSE (

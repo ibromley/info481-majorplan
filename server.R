@@ -28,44 +28,10 @@ shinyServer(function(input, output, session) {
   output$major.table <- renderTable({
     selected.tag <- input$search
     
-    if(selected.tag != '') {
-      # get all majors associated with tag
-      majors <- runQuery(paste0("SELECT MajorName, TagName
-                                  FROM MAJOR M
-                                    JOIN MAJOR_TAG MT ON MT.MajorID = M.MajorID
-                                    JOIN TAG T ON T.TagID = MT.TagID
-                                  WHERE TagName = '", selected.tag, "'"))
-      
-      # create a new matrix for major plan table
-      major.plan <- matrix(0, ncol = nrow(majors) + 1, nrow = 0)
-      
-      # loop through majors associated to tag
-      for(major in majors$MajorName){
-        # select courses for each major
-        courses <- runQuery(paste0("SELECT CourseName
-                                    FROM COURSE C
-                                      JOIN MAJOR_COURSE MC ON MC.CourseID = C.CourseID
-                                      JOIN MAJOR M ON M.MajorID = MC.MajorId
-                                    WHERE M.MajorName = '", major, "'"))
-        
-        if(nrow(courses) != 0) {
-          for(course in courses$CourseName) {
-            print(course)
-            # create course row
-            course.row <- c(course, rep(0, nrow(majors)))
-
-            major.plan <- rbind(major.plan, course.row)
-            
-            
-            #major.plan[[major]] = "X"
-          }
-        }
-      }
-      
-      df <- as.data.frame(major.plan)
-      colnames(df) <- c("Courses", majors$MajorName)
-      
-      df
+    if(selected.tag == 'data science') {
+      read.csv('data/fake_ds.csv')
+    } else if(selected.tag == 'med') {
+      read.csv('data/fake_med.csv')
     }
   })
   
