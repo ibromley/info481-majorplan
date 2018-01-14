@@ -69,7 +69,15 @@ body <- dashboardBody(
     box(title = "Interest Navigator", solidHeader = TRUE, 
         status = "primary",
         "Find related majors",
-        selectizeInput('search', label = NULL, choices = NULL, options = list(maxItems = 1)),
+        selectizeInput(
+          'search',
+          label = NULL,
+          choices = NULL,
+          options = list(
+            placeholder = "Search an area of interest...",
+            maxItems = 1
+          )
+        ),
         uiOutput("major.table")
     ),
     
